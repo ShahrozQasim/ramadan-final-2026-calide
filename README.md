@@ -1,1 +1,0 @@
-# ramadan-final-2026-calide
