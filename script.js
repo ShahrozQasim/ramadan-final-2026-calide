@@ -248,7 +248,7 @@ Ramadan Mubarak! 🤲`;
 📍 Karachi, Pakistan
 
 Get complete Ramadan timetable:
-https://ramadan-final-2026-calide-jqt6g1k8d-tendekhan037-7770s-projects.vercel.app/
+ramadan-final-2026-calide.vercel.app
 
 Created by 728 ❤️`;
     }
