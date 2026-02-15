@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ramadan Timings 2026 - Karachi</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-layer">
+        <div class="mosque-silhouette"></div>
+        <div class="stars-layer"></div>
+        <div class="moon-glow"></div>
+        <div class="clouds"></div>
+    </div>
+
+    <div class="decorations">
+        <div class="lantern-string left">
+            <div class="lantern" style="--delay: 0s;"></div>
+            <div class="lantern" style="--delay: 0.5s;"></div>
+        </div>
+        <div class="lantern-string right">
+            <div class="lantern" style="--delay: 0.3s;"></div>
+            <div class="lantern" style="--delay: 0.8s;"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <div class="bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+                <h1 class="title">
+                    <span class="arabic">رمضان مبارک</span>
+                    <span class="english">Ramadan Mubarak 2026</span>
+                </h1>
+                <div class="location">
+                    <span>📍</span>
+                    <span>Karachi, Pakistan</span>
+                </div>
+                <div class="status-badge">
+                    <span>⏳</span>
+                    <span id="statusText">Ramadan starts in 4 days</span>
+                </div>
+            </div>
+        </header>
+
+        <section class="current-day-section">
+            <div class="current-day-card">
+                <div class="ramadan-day">
+                    <span class="day-label">Ramadan Day</span>
+                    <span class="day-number" id="currentRamadanDay">⏳</span>
+                    <span class="day-total">/ 30</span>
+                </div>
+                <div class="date-info">
+                    <div class="hijri-date">Ramadan 1447 AH</div>
+                    <div class="gregorian-date">14 February 2026</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="countdown-section">
+            <div class="countdown-card">
+                <h2 class="countdown-title">
+                    <span>🌙</span>
+                    <span>Time Until Ramadan Begins</span>
+                </h2>
+                <div class="countdown-timer">
+                    <div class="time-unit">
+                        <span class="time-value" id="days">04</span>
+                        <span class="time-label">Days</span>
+                    </div>
+                    <div class="time-separator">:</div>
+                    <div class="time-unit">
+                        <span class="time-value" id="hours">00</span>
+                        <span class="time-label">Hours</span>
+                    </div>
+                    <div class="time-separator">:</div>
+                    <div class="time-unit">
+                        <span class="time-value" id="minutes">00</span>
+                        <span class="time-label">Minutes</span>
+                    </div>
+                    <div class="time-separator">:</div>
+                    <div class="time-unit">
+                        <span class="time-value" id="seconds">00</span>
+                        <span class="time-label">Seconds</span>
+                    </div>
+                </div>
+                <div class="countdown-message">Ramadan starts Wednesday, 18 Feb 2026!</div>
+            </div>
+        </section>
+
+        <section class="timetable-section">
+            <h2 class="section-title">
+                <span>📅</span>
+                Complete Ramadan 2026 Timetable
+                <span class="title-subtitle">30 Days of Blessing</span>
+            </h2>
+            <div class="table-container">
+                <table class="timetable">
+                    <thead>
+                        <tr>
+                            <th>Day</th>
+                            <th>Islamic Date</th>
+                            <th>Gregorian Date</th>
+                            <th>Sehri (Fajr)</th>
+                            <th>Iftar (Maghrib)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="timetableBody"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="notes-section">
+            <div class="note-card">
+                <h3>📌 Important Information</h3>
+                <ul>
+                    <li>✅ Ramadan 2026 begins on <strong>Wednesday, 18 February 2026</strong></li>
+                    <li>✅ All timings for <strong>Karachi, Pakistan</strong></li>
+                    <li>✅ Sehri time = Fajr prayer time</li>
+                    <li>✅ Iftar time = Maghrib prayer time</li>
+                    <li>🌙 May Allah accept your fasting</li>
+                </ul>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <p class="footer-prayer">اللَّهُمَّ تَقَبَّلْ مِنَّا صِيَامَنَا وَقِيَامَنَا</p>
+                <p class="footer-translation">"O Allah, accept our fasting and our prayers"</p>
+                <p class="footer-year">Ramadan 1447 AH / 2026 CE</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
