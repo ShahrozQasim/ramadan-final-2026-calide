@@ -348,15 +348,21 @@ function downloadShareCard() {
 }
 
 function copyLink() {
-    navigator.clipboard.writeText(window.location.href).then(() => {
+    const websiteURL = "https://ramadan-final-2026-calide.vercel.app";
+
+    navigator.clipboard.writeText(websiteURL).then(() => {
         const btn = document.getElementById('copyLink');
+        if (!btn) return;
+
         const originalText = btn.innerHTML;
         btn.innerHTML = '<span class="btn-icon">✅</span><span class="btn-text">Copied!</span>';
+
         setTimeout(() => {
             btn.innerHTML = originalText;
         }, 2000);
+    }).catch(() => {
+        alert("Copy failed! Please copy manually.");
     });
-}
 
 // ========================================
 // CORE FUNCTIONS
