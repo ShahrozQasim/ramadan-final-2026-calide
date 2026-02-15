@@ -257,7 +257,7 @@ Created by 728 ❤️`;
     window.open(url, '_blank');
 }
 
-function downlo byadShareCard() {
+function downloadShareCard() {
     const dayNum = getCurrentRamadanDay();
     if (dayNum <= 0 || dayNum > 30) {
         alert('Share cards are available during Ramadan!');
@@ -481,5 +481,5 @@ if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
 } else {
     init();
-    }
-        
+            }
+            
