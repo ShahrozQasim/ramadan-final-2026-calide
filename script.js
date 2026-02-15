@@ -222,45 +222,44 @@ function updateNotificationStatus() {
 // ========================================
 // SHARE FEATURE
 // ========================================
-function shareWhatsApp() {
+function downloadShareCard() {
+    const dayNum = getCurrentRamadanDay();
+    if (dayNum <= 0 || dayNum > 30) {
+        alert('Share cards are available dfunction shareWhatsApp() {
     const dayNum = getCurrentRamadanDay();
     let message = '';
     
     if (dayNum > 0 && dayNum <= 30) {
         const timing = TIMINGS[dayNum - 1];
-        message = `🌙 *Ramadan Day ${dayNum}*
-        
-📅 ${timing.gDay} ${timing.gMonth} ${timing.gYear}
-🕌 ${timing.hDay} ${timing.hMonth} 1447 AH
+        message = `Ramadan Day ${dayNum}
 
-⏰ *Today's Timings:*
-🌙 Sehri: ${formatTime(timing.sehri)}
-🌅 Iftar: ${formatTime(timing.iftar)}
+Date: ${timing.gDay} ${timing.gMonth} ${timing.gYear}
+Islamic: ${timing.hDay} ${timing.hMonth} 1447 AH
 
-📍 Karachi, Pakistan
-🌐 Created by 728
+Today's Timings:
+Sehri: ${formatTime(timing.sehri)}
+Iftar: ${formatTime(timing.iftar)}
 
-Ramadan Mubarak! 🤲`;
+Location: Karachi, Pakistan
+Website: https://ramadan-final-2026-calide.vercel.app
+
+Ramadan Mubarak!
+Created by 728`;
     } else {
-    message = `🌙 *Ramadan 2026 Timings*
-    
-📅 Starts: Wednesday, 18 February 2026
-📍 Karachi, Pakistan
+        message = `Ramadan 2026 Timings
+
+Starts: Wednesday, 18 February 2026
+Location: Karachi, Pakistan
 
 Get complete Ramadan timetable:
-ramadan-final-2026-calide.vercel.app
+https://ramadan-final-2026-calide.vercel.app
 
-Created by 728 ❤️`;
+Created by 728`;
     }
     
     const url = `https://wa.me/?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
-}
-
-function downloadShareCard() {
-    const dayNum = getCurrentRamadanDay();
-    if (dayNum <= 0 || dayNum > 30) {
-        alert('Share cards are available during Ramadan!');
+    }During Ramadan!');
         return;
     }
     
