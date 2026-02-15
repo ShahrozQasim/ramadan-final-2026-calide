@@ -242,13 +242,13 @@ function shareWhatsApp() {
 
 Ramadan Mubarak! 🤲`;
     } else {
-        message = `🌙 *Ramadan 2026 Timings*
-        
+    message = `🌙 *Ramadan 2026 Timings*
+    
 📅 Starts: Wednesday, 18 February 2026
 📍 Karachi, Pakistan
 
 Get complete Ramadan timetable:
-${window.location.href}
+https://ramadan-final-2026-calide-jqt6g1k8d-tendekhan037-7770s-projects.vercel.app/
 
 Created by 728 ❤️`;
     }
