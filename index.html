@@ -47,6 +47,52 @@
             </div>
         </header>
 
+        <!-- DAILY FACT SECTION -->
+        <section class="daily-fact-section">
+            <div class="fact-card">
+                <div class="fact-header">
+                    <span class="fact-icon">🌟</span>
+                    <h3 class="fact-title" id="factTitle">Daily Ramadan Wisdom</h3>
+                </div>
+                <p class="fact-content" id="factContent">Loading...</p>
+                <div class="fact-footer">
+                    <button class="next-fact-btn" id="nextFactBtn">
+                        <span>🔄</span> Next Fact
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- NOTIFICATION SETTINGS -->
+        <section class="notification-section">
+            <div class="notification-card">
+                <div class="notification-header">
+                    <span class="notification-icon">🔔</span>
+                    <h3>Prayer Reminders</h3>
+                </div>
+                <div class="notification-controls">
+                    <div class="control-item">
+                        <label class="switch">
+                            <input type="checkbox" id="sehriNotif">
+                            <span class="slider"></span>
+                        </label>
+                        <span class="control-label">Sehri Reminder (10 min before)</span>
+                    </div>
+                    <div class="control-item">
+                        <label class="switch">
+                            <input type="checkbox" id="iftarNotif">
+                            <span class="slider"></span>
+                        </label>
+                        <span class="control-label">Iftar Reminder (5 min before)</span>
+                    </div>
+                </div>
+                <button class="enable-notifications-btn" id="enableNotifBtn">
+                    🔔 Enable Notifications
+                </button>
+                <p class="notification-status" id="notifStatus"></p>
+            </div>
+        </section>
+
         <section class="current-day-section">
             <div class="current-day-card">
                 <div class="ramadan-day">
@@ -92,6 +138,29 @@
             </div>
         </section>
 
+        <!-- SHARE SECTION -->
+        <section class="share-section">
+            <div class="share-card">
+                <h3 class="share-title">
+                    <span>📤</span> Share Today's Timings
+                </h3>
+                <div class="share-buttons">
+                    <button class="share-btn whatsapp-btn" id="shareWhatsApp">
+                        <span class="btn-icon">📲</span>
+                        <span class="btn-text">WhatsApp</span>
+                    </button>
+                    <button class="share-btn download-btn" id="downloadCard">
+                        <span class="btn-icon">📸</span>
+                        <span class="btn-text">Download Card</span>
+                    </button>
+                    <button class="share-btn copy-btn" id="copyLink">
+                        <span class="btn-icon">🔗</span>
+                        <span class="btn-text">Copy Link</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
         <section class="timetable-section">
             <h2 class="section-title">
                 <span>📅</span>
@@ -127,15 +196,26 @@
             </div>
         </section>
 
+        <!-- FOOTER WITH CREDITS -->
         <footer class="footer">
             <div class="footer-content">
                 <p class="footer-prayer">اللَّهُمَّ تَقَبَّلْ مِنَّا صِيَامَنَا وَقِيَامَنَا</p>
                 <p class="footer-translation">"O Allah, accept our fasting and our prayers"</p>
                 <p class="footer-year">Ramadan 1447 AH / 2026 CE</p>
+                
+                <!-- CREDITS SECTION -->
+                <div class="footer-credits">
+                    <p class="credits-text">Created with ❤️ by <strong>728</strong></p>
+                    <p class="credits-subtext">Ramadan Timings • Karachi, Pakistan</p>
+                </div>
             </div>
         </footer>
     </div>
 
+    <!-- Hidden canvas for share card generation -->
+    <canvas id="shareCanvas" style="display:none;"></canvas>
+
     <script src="script.js"></script>
 </body>
-</html>
+    </html>
+            }
