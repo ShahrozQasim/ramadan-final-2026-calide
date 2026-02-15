@@ -257,7 +257,7 @@ Created by 728 ❤️`;
     window.open(url, '_blank');
 }
 
-function downloadShareCard() {
+function downlo byadShareCard() {
     const dayNum = getCurrentRamadanDay();
     if (dayNum <= 0 || dayNum > 30) {
         alert('Share cards are available during Ramadan!');
@@ -348,21 +348,15 @@ function downloadShareCard() {
 }
 
 function copyLink() {
-    const websiteURL = "https://ramadan-final-2026-calide.vercel.app";
-
-    navigator.clipboard.writeText(websiteURL).then(() => {
+    navigator.clipboard.writeText(window.location.href).then(() => {
         const btn = document.getElementById('copyLink');
-        if (!btn) return;
-
         const originalText = btn.innerHTML;
         btn.innerHTML = '<span class="btn-icon">✅</span><span class="btn-text">Copied!</span>';
-
         setTimeout(() => {
             btn.innerHTML = originalText;
         }, 2000);
-    }).catch(() => {
-        alert("Copy failed! Please copy manually.");
     });
+}
 
 // ========================================
 // CORE FUNCTIONS
@@ -487,4 +481,5 @@ if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
 } else {
     init();
-}
+    }
+        
