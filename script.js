@@ -1,4 +1,3 @@
-```javascript
 // RAMADAN 2026 - ENHANCED VERSION
 // Features: Daily Facts, Notifications, Share Buttons
 
@@ -41,6 +40,7 @@ const TIMINGS = [
     {day:30,hDay:30,hMonth:'Ramadan',gDay:19,gMonth:'March',gYear:2026,sehri:'05:20',iftar:'06:43'}
 ];
 
+// DAILY RAMADAN FACTS (30 facts - one for each day)
 const RAMADAN_FACTS = [
     "Fasting teaches patience, self-discipline, and gratitude for Allah's blessings.",
     "Ramadan is the month when the Quran was first revealed to Prophet Muhammad ﷺ.",
@@ -78,11 +78,17 @@ let currentFactIndex = 0;
 let countdownInterval = null;
 let notificationCheckInterval = null;
 
+// ========================================
+// DAILY FACT FEATURE
+// ========================================
 function showDailyFact() {
     const factTitle = document.getElementById('factTitle');
     const factContent = document.getElementById('factContent');
+    
+    // Get day number (1-30) or use random if before/after Ramadan
     const dayNum = getCurrentRamadanDay();
     currentFactIndex = (dayNum > 0 && dayNum <= 30) ? (dayNum - 1) : Math.floor(Math.random() * RAMADAN_FACTS.length);
+    
     if (factTitle) factTitle.textContent = `Ramadan Wisdom #${currentFactIndex + 1}`;
     if (factContent) {
         factContent.textContent = RAMADAN_FACTS[currentFactIndex];
@@ -94,6 +100,7 @@ function showNextFact() {
     currentFactIndex = (currentFactIndex + 1) % RAMADAN_FACTS.length;
     const factTitle = document.getElementById('factTitle');
     const factContent = document.getElementById('factContent');
+    
     if (factTitle) factTitle.textContent = `Ramadan Wisdom #${currentFactIndex + 1}`;
     if (factContent) {
         factContent.style.animation = 'none';
@@ -104,16 +111,24 @@ function showNextFact() {
     }
 }
 
+// ========================================
+// NOTIFICATION FEATURE
+// ========================================
 async function requestNotificationPermission() {
     if (!('Notification' in window)) {
         alert('Your browser does not support notifications');
         return false;
     }
-    if (Notification.permission === 'granted') return true;
+    
+    if (Notification.permission === 'granted') {
+        return true;
+    }
+    
     if (Notification.permission !== 'denied') {
         const permission = await Notification.requestPermission();
         return permission === 'granted';
     }
+    
     return false;
 }
 
@@ -122,6 +137,7 @@ function showNotification(title, body) {
         new Notification(title, {
             body: body,
             icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🌙</text></svg>',
+            badge: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🌙</text></svg>',
             requireInteraction: true
         });
     }
@@ -130,28 +146,51 @@ function showNotification(title, body) {
 function checkAndSendNotifications() {
     const sehriEnabled = localStorage.getItem('sehriNotif') === 'true';
     const iftarEnabled = localStorage.getItem('iftarNotif') === 'true';
+    
     if (!sehriEnabled && !iftarEnabled) return;
+    
     const dayNum = getCurrentRamadanDay();
     if (dayNum <= 0 || dayNum > 30) return;
+    
     const todayTiming = TIMINGS[dayNum - 1];
     if (!todayTiming) return;
+    
     const now = new Date();
     const [sehriH, sehriM] = todayTiming.sehri.split(':').map(Number);
     const [iftarH, iftarM] = todayTiming.iftar.split(':').map(Number);
+    
+    const sehriTime = new Date(now);
+    sehriTime.setHours(sehriH, sehriM, 0, 0);
+    
+    const iftarTime = new Date(now);
+    iftarTime.setHours(iftarH, iftarM, 0, 0);
+    
     const currentHour = now.getHours();
     const currentMin = now.getMinutes();
+    
+    // Sehri notification - 10 minutes before
     if (sehriEnabled) {
-        const sehriTime = new Date(now);
-        sehriTime.setHours(sehriH, sehriM - 10, 0, 0);
-        if (currentHour === sehriTime.getHours() && currentMin === sehriTime.getMinutes()) {
-            showNotification('Sehri Reminder', `Only 10 minutes left! Sehri ends at ${formatTime(todayTiming.sehri)}`);
+        const sehriNotifTime = new Date(sehriTime);
+        sehriNotifTime.setMinutes(sehriNotifTime.getMinutes() - 10);
+        
+        if (currentHour === sehriNotifTime.getHours() && currentMin === sehriNotifTime.getMinutes()) {
+            showNotification(
+                '🌙 Sehri Reminder',
+                `Only 10 minutes left! Sehri ends at ${formatTime(todayTiming.sehri)}`
+            );
         }
     }
+    
+    // Iftar notification - 5 minutes before
     if (iftarEnabled) {
-        const iftarTime = new Date(now);
-        iftarTime.setHours(iftarH, iftarM - 5, 0, 0);
-        if (currentHour === iftarTime.getHours() && currentMin === iftarTime.getMinutes()) {
-            showNotification('Iftar Time Soon!', `5 minutes until Iftar at ${formatTime(todayTiming.iftar)}`);
+        const iftarNotifTime = new Date(iftarTime);
+        iftarNotifTime.setMinutes(iftarNotifTime.getMinutes() - 5);
+        
+        if (currentHour === iftarNotifTime.getHours() && currentMin === iftarNotifTime.getMinutes()) {
+            showNotification(
+                '🌅 Iftar Time Soon!',
+                `5 minutes until Iftar at ${formatTime(todayTiming.iftar)}. Prepare to break your fast!`
+            );
         }
     }
 }
@@ -159,56 +198,61 @@ function checkAndSendNotifications() {
 function updateNotificationStatus() {
     const statusEl = document.getElementById('notifStatus');
     if (!statusEl) return;
+    
     if (Notification.permission === 'granted') {
         const sehriEnabled = localStorage.getItem('sehriNotif') === 'true';
         const iftarEnabled = localStorage.getItem('iftarNotif') === 'true';
+        
         if (sehriEnabled || iftarEnabled) {
-            statusEl.textContent = 'Notifications enabled!';
+            statusEl.textContent = '✅ Notifications enabled!';
             statusEl.style.color = '#00ff88';
         } else {
-            statusEl.textContent = 'Enable at least one reminder above';
+            statusEl.textContent = '⚠️ Enable at least one reminder above';
             statusEl.style.color = '#ffed4e';
         }
     } else if (Notification.permission === 'denied') {
-        statusEl.textContent = 'Notifications blocked. Enable in browser settings.';
+        statusEl.textContent = '❌ Notifications blocked. Enable in browser settings.';
         statusEl.style.color = '#ff6b6b';
     } else {
-        statusEl.textContent = 'Click "Enable Notifications" to get started';
+        statusEl.textContent = '🔔 Click "Enable Notifications" to get started';
         statusEl.style.color = '#b0b0b0';
     }
 }
 
+// ========================================
+// SHARE FEATURE
+// ========================================
 function shareWhatsApp() {
     const dayNum = getCurrentRamadanDay();
     let message = '';
+    
     if (dayNum > 0 && dayNum <= 30) {
         const timing = TIMINGS[dayNum - 1];
-        message = `Ramadan Day ${dayNum}
+        message = `🌙 *Ramadan Day ${dayNum}*
+        
+📅 ${timing.gDay} ${timing.gMonth} ${timing.gYear}
+🕌 ${timing.hDay} ${timing.hMonth} 1447 AH
 
-Date: ${timing.gDay} ${timing.gMonth} ${timing.gYear}
-Islamic: ${timing.hDay} ${timing.hMonth} 1447 AH
+⏰ *Today's Timings:*
+🌙 Sehri: ${formatTime(timing.sehri)}
+🌅 Iftar: ${formatTime(timing.iftar)}
 
-Today's Timings:
-Sehri: ${formatTime(timing.sehri)}
-Iftar: ${formatTime(timing.iftar)}
+📍 Karachi, Pakistan
+🌐 Created by 728
 
-Location: Karachi, Pakistan
-
-Ramadan Mubarak!
-Created by 728
-
-Visit: https://ramadan-final-2026-calide.vercel.app`;
+Ramadan Mubarak! 🤲`;
     } else {
-        message = `Ramadan 2026 Timings
-
-Starts: Wednesday, 18 February 2026
-Location: Karachi, Pakistan
+        message = `🌙 *Ramadan 2026 Timings*
+        
+📅 Starts: Wednesday, 18 February 2026
+📍 Karachi, Pakistan
 
 Get complete Ramadan timetable:
-https://ramadan-final-2026-calide.vercel.app
+${https://ramadan-final-2026-calide.vercel.app}
 
-Created by 728`;
+Created by 728 ❤️`;
     }
+    
     const url = `https://wa.me/?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
 }
@@ -219,58 +263,84 @@ function downloadShareCard() {
         alert('Share cards are available during Ramadan!');
         return;
     }
+    
     const timing = TIMINGS[dayNum - 1];
     const canvas = document.getElementById('shareCanvas');
     const ctx = canvas.getContext('2d');
+    
+    // Set canvas size (Instagram story size)
     canvas.width = 1080;
     canvas.height = 1920;
+    
+    // Background gradient
     const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
     gradient.addColorStop(0, '#0a0e27');
     gradient.addColorStop(0.5, '#141b3d');
     gradient.addColorStop(1, '#1a237e');
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Add decorative elements
     ctx.fillStyle = 'rgba(255, 215, 0, 0.1)';
     ctx.beginPath();
     ctx.arc(900, 200, 300, 0, Math.PI * 2);
     ctx.fill();
+    
+    // Title
     ctx.fillStyle = '#ffd700';
     ctx.font = 'bold 80px Arial';
     ctx.textAlign = 'center';
-    ctx.fillText('Ramadan Mubarak', canvas.width / 2, 250);
+    ctx.fillText('رمضان مبارک', canvas.width / 2, 250);
+    
     ctx.fillStyle = '#f0f0f0';
     ctx.font = '50px Arial';
     ctx.fillText('Ramadan Mubarak 2026', canvas.width / 2, 350);
+    
+    // Day number
     ctx.fillStyle = '#ffd700';
     ctx.font = 'bold 120px Arial';
     ctx.fillText(`Day ${dayNum}`, canvas.width / 2, 550);
+    
+    // Date
     ctx.fillStyle = '#b0b0b0';
     ctx.font = '40px Arial';
     ctx.fillText(`${timing.gDay} ${timing.gMonth} ${timing.gYear}`, canvas.width / 2, 650);
     ctx.fillText(`${timing.hDay} ${timing.hMonth} 1447 AH`, canvas.width / 2, 720);
+    
+    // Timings box
     ctx.fillStyle = 'rgba(255, 215, 0, 0.1)';
     ctx.fillRect(140, 850, 800, 350);
     ctx.strokeStyle = '#ffd700';
     ctx.lineWidth = 3;
     ctx.strokeRect(140, 850, 800, 350);
+    
+    // Sehri
     ctx.fillStyle = '#f0f0f0';
     ctx.font = '45px Arial';
-    ctx.fillText('Sehri Ends', canvas.width / 2, 950);
+    ctx.fillText('🌙 Sehri Ends', canvas.width / 2, 950);
     ctx.fillStyle = '#ffd700';
     ctx.font = 'bold 70px Arial';
     ctx.fillText(formatTime(timing.sehri), canvas.width / 2, 1040);
+    
+    // Iftar
     ctx.fillStyle = '#f0f0f0';
     ctx.font = '45px Arial';
-    ctx.fillText('Iftar Time', canvas.width / 2, 1140);
+    ctx.fillText('🌅 Iftar Time', canvas.width / 2, 1140);
     ctx.fillStyle = '#ffd700';
     ctx.font = 'bold 70px Arial';
     ctx.fillText(formatTime(timing.iftar), canvas.width / 2, 1230);
+    
+    // Location
     ctx.fillStyle = '#b0b0b0';
     ctx.font = '35px Arial';
-    ctx.fillText('Karachi, Pakistan', canvas.width / 2, 1450);
+    ctx.fillText('📍 Karachi, Pakistan', canvas.width / 2, 1450);
+    
+    // Footer credit
     ctx.fillStyle = '#ffd700';
     ctx.font = 'bold 40px Arial';
     ctx.fillText('Created by 728', canvas.width / 2, 1750);
+    
+    // Download
     const link = document.createElement('a');
     link.download = `Ramadan-Day-${dayNum}-Timings.png`;
     link.href = canvas.toDataURL();
@@ -282,10 +352,15 @@ function copyLink() {
         const btn = document.getElementById('copyLink');
         const originalText = btn.innerHTML;
         btn.innerHTML = '<span class="btn-icon">✅</span><span class="btn-text">Copied!</span>';
-        setTimeout(() => btn.innerHTML = originalText, 2000);
+        setTimeout(() => {
+            btn.innerHTML = originalText;
+        }, 2000);
     });
 }
 
+// ========================================
+// CORE FUNCTIONS
+// ========================================
 function formatTime(time24) {
     const [hours, minutes] = time24.split(':').map(Number);
     const period = hours >= 12 ? 'PM' : 'AM';
@@ -298,6 +373,7 @@ function getCurrentRamadanDay() {
     const startDate = new Date(CONFIG.ramadanStartDate);
     const endDate = new Date(startDate);
     endDate.setDate(startDate.getDate() + 29);
+    
     if (now < startDate) return 0;
     if (now > endDate) return -1;
     return Math.floor((now - startDate) / (1000 * 60 * 60 * 24)) + 1;
@@ -306,12 +382,21 @@ function getCurrentRamadanDay() {
 function populateTimetable() {
     const tbody = document.getElementById('timetableBody');
     if (!tbody) return;
+    
     tbody.innerHTML = '';
     const currentDay = getCurrentRamadanDay();
+    
     TIMINGS.forEach(timing => {
         const row = document.createElement('tr');
         if (timing.day === currentDay) row.classList.add('current-day');
-        row.innerHTML = `<td>${timing.day}</td><td>${timing.hDay} ${timing.hMonth}</td><td>${timing.gDay} ${timing.gMonth} ${timing.gYear}</td><td>${formatTime(timing.sehri)}</td><td>${formatTime(timing.iftar)}</td>`;
+        
+        row.innerHTML = `
+            <td>${timing.day}</td>
+            <td>${timing.hDay} ${timing.hMonth}</td>
+            <td>${timing.gDay} ${timing.gMonth} ${timing.gYear}</td>
+            <td>${formatTime(timing.sehri)}</td>
+            <td>${formatTime(timing.iftar)}</td>
+        `;
         tbody.appendChild(row);
     });
 }
@@ -320,11 +405,13 @@ function updateCountdown() {
     const now = new Date();
     const targetTime = new Date(CONFIG.ramadanStartDate);
     const timeDiff = targetTime - now;
+    
     if (timeDiff > 0 && getCurrentRamadanDay() === 0) {
         const days = Math.floor(timeDiff / 86400000);
         const hours = Math.floor((timeDiff % 86400000) / 3600000);
         const minutes = Math.floor((timeDiff % 3600000) / 60000);
         const seconds = Math.floor((timeDiff % 60000) / 1000);
+        
         ['days', 'hours', 'minutes', 'seconds'].forEach((id, i) => {
             const el = document.getElementById(id);
             if (el) el.textContent = String([days, hours, minutes, seconds][i]).padStart(2, '0');
@@ -332,27 +419,43 @@ function updateCountdown() {
     }
 }
 
+// ========================================
+// INITIALIZATION
+// ========================================
 function init() {
     document.documentElement.setAttribute('data-theme', 'dark');
+    
+    // Core features
     populateTimetable();
     updateCountdown();
     countdownInterval = setInterval(updateCountdown, 1000);
+    
+    // Daily fact
     showDailyFact();
     document.getElementById('nextFactBtn')?.addEventListener('click', showNextFact);
+    
+    // Notifications
     updateNotificationStatus();
+    
     document.getElementById('enableNotifBtn')?.addEventListener('click', async () => {
         const granted = await requestNotificationPermission();
         updateNotificationStatus();
-        if (granted) showNotification('Notifications Enabled', 'You will receive reminders!');
+        if (granted) {
+            showNotification('🌙 Notifications Enabled', 'You will receive reminders for Sehri and Iftar!');
+        }
     });
+    
     document.getElementById('sehriNotif')?.addEventListener('change', (e) => {
         localStorage.setItem('sehriNotif', e.target.checked);
         updateNotificationStatus();
     });
+    
     document.getElementById('iftarNotif')?.addEventListener('change', (e) => {
         localStorage.setItem('iftarNotif', e.target.checked);
         updateNotificationStatus();
     });
+    
+    // Load saved preferences
     if (localStorage.getItem('sehriNotif') === 'true') {
         const el = document.getElementById('sehriNotif');
         if (el) el.checked = true;
@@ -361,11 +464,16 @@ function init() {
         const el = document.getElementById('iftarNotif');
         if (el) el.checked = true;
     }
+    
+    // Check notifications every minute
     notificationCheckInterval = setInterval(checkAndSendNotifications, 60000);
-    checkAndSendNotifications();
+    checkAndSendNotifications(); // Check immediately
+    
+    // Share buttons
     document.getElementById('shareWhatsApp')?.addEventListener('click', shareWhatsApp);
     document.getElementById('downloadCard')?.addEventListener('click', downloadShareCard);
     document.getElementById('copyLink')?.addEventListener('click', copyLink);
+    
     console.log('✅ Ramadan 2026 Enhanced - Ready!');
 }
 
@@ -373,5 +481,5 @@ if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
 } else {
     init();
-}
-```
+            }
+        
