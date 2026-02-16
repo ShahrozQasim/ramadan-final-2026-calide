@@ -2,7 +2,7 @@
 const CONFIG = {
     city: 'Karachi',
     country: 'Pakistan',
-    ramadanStartDate: new Date('2026-02-18T00:00:00+05:00')
+    ramadanStartDate: new Date('2026-02-19T00:00:00+05:00')
 };
 
 const TIMINGS = [
